@@ -1,22 +1,28 @@
-#!/usr/bin/env python3
-
-from flask import Flask, make_response
-from flask_migrate import Migrate
-
-from models import db, Hero
+from flask import Flask, jsonify
+from models import db, Hero, Power, HeroPower
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'  # Use SQLite for simplicity
 
-migrate = Migrate(app, db)
+# Initialize the database
+with app.app_context():
+    db.init_app(app)
+    db.create_all()
 
-db.init_app(app)
-
+# Routes
 @app.route('/')
 def home():
-    return ''
+    return 'Hello, welcome to the superheroes code challenge!'
 
+@app.route('/heroes')
+def get_heroes():
+    heroes = Hero.query.all()
+    return jsonify({'heroes': [{'id': hero.id, 'name': hero.name} for hero in heroes]})
+
+@app.route('/powers')
+def get_powers():
+    powers = Power.query.all()
+    return jsonify({'powers': [{'id': power.id, 'description': power.description} for power in powers]})
 
 if __name__ == '__main__':
-    app.run(port=5555)
+    app.run(debug=True)
