@@ -4,11 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask-migrate = "*"
 flask = "*"
-wtforms = "*"
+flask-migrate = "*"
+migrate = "*"
+sqlalchemy = "*"
+flask-sqlalchemy = "*"
+faker = "*"
+cors = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.12"
+python_version = "3.9"
